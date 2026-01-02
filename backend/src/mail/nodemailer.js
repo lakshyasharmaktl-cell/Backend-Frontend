@@ -1,53 +1,60 @@
-import nodemailer from "nodemailer";
-import dotenv from "dotenv";
+import NodeMailer from 'nodemailer';
+import dotenv from 'dotenv';
 
-dotenv.config();
+dotenv.config()
 
-// Create transporter
-const transporter = nodemailer.createTransport({
-  host: "smtp.gmail.com",
-  port: 465,
-  secure: true, // true for 465, false for 587
-  auth: {
-    user: process.env.Nodemailerusername,
-    pass: process.env.NodemailerPassword,
-  },
+const transporter = NodeMailer.createTransport({
+    host:  "smtp.gmail.com",
+    port: 465,
+    secure: true,
+    auth: {
+        user: process.env.Nodemailerusername,
+        pass: process.env.NodemailerPassword,
+    },
 });
 
-// Send OTP Mail
 export const newUserOtp = async (email, name, otp) => {
-  try {
-    const info = await transporter.sendMail({
-      from: `"OTP Service" <${process.env.NODEMAILER_USERNAME}>`,
-      to: email,
-      subject: "Your OTP Code",
-      text: `Hello ${name}, your OTP is ${otp}`,
-      html: `
-        <div style="max-width:600px;margin:auto;font-family:Arial,sans-serif;border:1px solid #ddd;padding:20px;border-radius:8px;">
-          <h2 style="color:#333;">Hello ${name} 👋</h2>
-          <p style="font-size:16px;color:#555;">
-            Your One Time Password (OTP) is:
-          </p>
+    try {
+        const info = await transporter.sendMail({
+            from: "Maddison Foo Koch",
+            to: email,
+            subject: "Verify Your Account - OTP Inside",
+            html: `
+            <div style="width:100%; background:#f5f5f5; padding:30px 0; font-family:Arial, sans-serif;">
+                <div style="max-width:450px; background:#ffffff; margin:auto; padding:25px; border-radius:8px; border:1px solid #e6e6e6;">
+                    
+                    <h2 style="color:#222; margin-bottom:10px; font-size:22px;">
+                        Welcome, ${name}! 🎉
+                    </h2>
 
-          <div style="font-size:24px;font-weight:bold;color:#0d6efd;text-align:center;margin:20px 0;">
-            ${otp}
-          </div>
+                    <p style="color:#444; font-size:15px; line-height:1.5; margin-bottom:18px;">
+                        Thanks for creating an account with us.<br>
+                        Please use the OTP below to verify your email address:
+                    </p>
 
-          <p style="font-size:14px;color:#777;">
-            This OTP is valid for 5 minutes. Please do not share it with anyone.
-          </p>
+                    <div style="text-align:center; margin:25px 0;">
+                        <p style="color:#555; font-size:13px; margin-bottom:5px;">Your One-Time Password (OTP)</p>
+                        <span style="font-size:32px; font-weight:bold; letter-spacing:4px; color:#4a4ad1;">
+                            ${otp}
+                        </span>
+                    </div>
 
-          <hr />
+                    <p style="color:#666; font-size:14px; line-height:1.5; margin-bottom:20px;">
+                        ⏳ <strong>OTP expires in 5 minutes.</strong><br>
+                        If you didnt request this, please ignore the email.
+                    </p>
 
-          <p style="font-size:12px;color:#999;text-align:center;">
-            © 2026 OTP Service. All rights reserved.
-          </p>
-        </div>
-      `,
-    });
+                    <p style="text-align:center; color:#999; font-size:12px; margin-top:25px;">
+                        © ${new Date().getFullYear()} Your Company. All rights reserved.
+                    </p>
 
-    console.log("Email sent successfully:", info.messageId);
-  } catch (error) {
-    console.error("Error sending email:", error.message);
-  }
+                </div>
+            </div>
+            `
+        });
+
+        console.log("Message sent:", info.messageId);
+    } catch (err) {
+        console.log(err.message);
+    }
 };
