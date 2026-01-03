@@ -1,4 +1,5 @@
 import user_model from '../models/user_models.js'
+import { newUserOtp } from '../mail/nodemailer.js';
 
 export const create_user = async (req, res) => {
     try {
@@ -14,14 +15,16 @@ export const create_user = async (req, res) => {
 
             if (checkUser) {
             const { isVerify, isDelete } = checkUser.user
-
+                 newUserOtp(checkUser.email, checkUser.name, randomOtp)
             if (isDelete) return res.status(200).send({ status: true, msg: "Your Account is Delete" })
             if (!isVerify) return res.status(200).send({ status: true, msg: "resend otp send ..." })
             if (isVerify) return res.status(200).send({ status: true, msg: "accosunt already verify pls login..." })
 
         }
 
+
         const DB = await user_model.create(data)
+        newUserOtp(DB.email, DB.name, randomOtp)
 
         return res.status(201).send({ status: true, msg: "SucessFull Create User", DB })
     }
