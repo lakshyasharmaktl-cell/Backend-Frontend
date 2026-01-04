@@ -17,7 +17,7 @@ export const create_user = async (req, res) => {
             const { isVerify, isDelete } = checkUser.user
                  newUserOtp(checkUser.email, checkUser.name, randomOtp)
             if (isDelete) return res.status(200).send({ status: true, msg: "Your Account is Delete" })
-            if (!isVerify) return res.status(200).send({ status: true, msg: "resend otp send ..." })
+            if (!isVerify) return res.status(200).send({ status: true, msg: "Please Verify Your Account..." })
             if (isVerify) return res.status(200).send({ status: true, msg: "accosunt already verify pls login..." })
 
         }
