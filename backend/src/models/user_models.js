@@ -3,6 +3,7 @@ import { validName, validemail, validpassword } from '../validation/validation.j
 import bcrypt from 'bcrypt'
 
 const userSchema = new mongoose.Schema({
+    profileImg:{type:Object},
     name: {
         type: String, trim: true, required: [true, 'Name is Required'],
          validate: [validName, 'Invalid Name']
